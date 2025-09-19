@@ -29,11 +29,11 @@ func (h *Handler) Start() {
 	updates := h.bot.GetUpdatesChan(u)
 
 	for update := range updates {
-		h.HandlerUpdate(update)
+		h.handlerUpdate(update)
 	}
 }
 
-func (h *Handler) HandlerUpdate(update tgbotapi.Update) {
+func (h *Handler) handlerUpdate(update tgbotapi.Update) {
 	if update.Message == nil {
 		return
 	}
