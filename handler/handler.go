@@ -37,11 +37,10 @@ func (h *Handler) HandlerUpdate(update tgbotapi.Update) {
 	if update.Message != nil { // If we got a message
 		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 		coordinates, err := h.owClient.Coordinats(update.Message.Text)
-		if err != nil {
 
-			msg := tgbotapi.NewMessage(
-				update.Message.Chat.ID,
-				"Не смогли получить координаты")
+		if err != nil {
+			log.Println(err)
+			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Не смогли получить координаты")
 			msg.ReplyToMessageID = update.Message.MessageID
 			h.bot.Send(msg)
 			return
@@ -49,6 +48,7 @@ func (h *Handler) HandlerUpdate(update tgbotapi.Update) {
 
 		weather, err := h.owClient.Weather(coordinates.Lat, coordinates.Lon)
 		if err != nil {
+			log.Println(err)
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Не смогли получить погоду в этой местности")
 			msg.ReplyToMessageID = update.Message.MessageID
 			h.bot.Send(msg)
