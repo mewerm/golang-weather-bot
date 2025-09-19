@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math"
 	"os"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -54,7 +55,7 @@ func main() {
 			}
 
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID,
-				fmt.Sprintf("Температура в %s: %f,", update.Message.Text, weather.Temp))
+				fmt.Sprintf("Температура в %s: %d°C", update.Message.Text, int(math.Round(weather.Temp)))) //Round
 			msg.ReplyToMessageID = update.Message.MessageID
 
 			bot.Send(msg)
