@@ -45,8 +45,16 @@ func main() {
 				continue
 			}
 
+			weather, err := owClient.Weather(coordinates.Lat, coordinates.Lon)
+			if err != nil {
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Не смогли получить погоду в этой местности")
+				msg.ReplyToMessageID = update.Message.MessageID
+				bot.Send(msg)
+				continue
+			}
+
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID,
-				fmt.Sprintf(" %f, %f", coordinates.Lat, coordinates.Lon))
+				fmt.Sprintf("Температура в %s: %f,", update.Message.Text, weather.Temp))
 			msg.ReplyToMessageID = update.Message.MessageID
 
 			bot.Send(msg)
